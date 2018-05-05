@@ -2,6 +2,8 @@ package graetap3;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -17,6 +19,7 @@ import javax.swing.KeyStroke;
  /**klasa zawieraj�ca menu gry*/
 public class Panel extends JPanel implements ActionListener {
 	
+        private JFrame masterJFrame;
 	private JButton bGraj,bInstrukcja,bWyniki,bWyjdz;
 	//
 	private JMenuBar menu;
@@ -32,11 +35,13 @@ public class Panel extends JPanel implements ActionListener {
 	private Object sImie;
 	//
         
-        private int scale = 2;
+        private Konfiguracja konfiguracja = new Konfiguracja();
+        private double scale = 1;
 	
-	Panel(){
-		setSize(400,300);
-
+	Panel( JFrame masterJFrame )
+        {
+            this.masterJFrame = masterJFrame;
+		setSize(konfiguracja.width, konfiguracja.height);
 		
 	 /**okno instrukcji*/
 		
@@ -130,8 +135,8 @@ public class Panel extends JPanel implements ActionListener {
 		
 		
 	}
-	
-	/**opisanie zachowania programu po wci�ni�ciu poszczeg�lnych guzik�w*/
+        
+        /**opisanie zachowania programu po wci�ni�ciu poszczeg�lnych guzik�w*/
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Object zrodlo = arg0.getSource();
@@ -139,15 +144,14 @@ public class Panel extends JPanel implements ActionListener {
 		if(zrodlo==bGraj )
 		{
 			setLayout(null);
-			oknoGry = new Rysowanie();
+			oknoGry = new Rysowanie(konfiguracja);
+                        masterJFrame.addComponentListener(oknoGry);
 			add(oknoGry);
 			bGraj.setVisible(false);
 			bInstrukcja.setVisible(false);
 			bWyniki.setVisible(false);
 			bWyjdz.setVisible(false);
                         
-                        //setSize( getSize().width*scale, getSize().height*scale );
-                        oknoGry.setScale(scale); // przeskalowanie okna gry
 			oknoGry.start(); // Poczatek gry
                         
 			//lGra.setVisible(true);
@@ -194,4 +198,5 @@ public class Panel extends JPanel implements ActionListener {
 		System.out.println("actionListener: ");
 		
 	}
+
 }

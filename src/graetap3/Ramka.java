@@ -2,17 +2,17 @@ package graetap3;
 
 import javax.swing.JFrame;
 
-/**glowny program, wywo³ywanie poszczególnych elementów, pojawienie siê menu i gry */
+/**glowny program, wywoï¿½ywanie poszczegï¿½lnych elementï¿½w, pojawienie siï¿½ menu i gry */
 
 public class Ramka extends JFrame {
 
 	public Ramka(){
-		setSize(400,300);
+		setSize(400,400);
 		setTitle("KULKA");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setLocationRelativeTo(null);
-		Panel panel= new Panel();
+		Panel panel= new Panel(this);
 		add(panel);
 		panel.setVisible(true);
 		//Rysowanie rys= new Rysowanie();

@@ -16,7 +16,7 @@ public class Gracz {
     private double velocity_x = 1.0;
     private double velocity_y = 0.0;
     private double acceleration_x = 0.0;
-    private double acceleration_y = 0.05;
+    private double acceleration_y = 0.2;
     
  
     private Mapa map;
@@ -42,8 +42,8 @@ public class Gracz {
     public void update(){
     	x += velocity_x;
         y += velocity_y;
-        velocity_x += acceleration_x;
-        velocity_y += acceleration_y;
+        velocity_x += acceleration_x - 0.1*velocity_x;
+        velocity_y += acceleration_y - 0.1*velocity_y;
         
         if( x>(map.getUnscaledWidth()-width) )   
         {
@@ -65,15 +65,17 @@ public class Gracz {
             y = 0;
             velocity_y = 0;
         }
+        
+        map.update();
     }
   /**metoda kolorujaca gracza (kulke)
    * 
    * @param g
    */
     public void draw(Graphics g){
-        int scale = map.getTileSize();
+        double scale = map.getTileSize();
         g.setColor(Color.RED);
-        g.fillOval((int)x*scale, (int)y*scale, width*scale, height*scale);
+        g.fillOval((int)(x*scale), (int)(y*scale), (int)(width*scale), (int)(height*scale));
     }
  
 }

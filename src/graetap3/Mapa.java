@@ -1,5 +1,6 @@
 package graetap3;
 
+import com.sun.javafx.tk.quantum.MasterTimer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,6 +24,8 @@ public class Mapa{
     private int[][] map;
     private int mapWidth;
     private int mapHeight;
+    
+    Rysowanie masterWindow;
  
     Konfiguracja conf = new Konfiguracja();
     /**
@@ -30,7 +33,8 @@ public class Mapa{
      * @param s nazwa mapy
      * @param tileSize wielkosc jednej cyfry
      */
-    public Mapa(String s, int tileSize){
+    public Mapa(String s, int tileSize, Rysowanie masterWindow){
+        this.masterWindow = masterWindow;
          this.tileSize = tileSize;
  
          try{
@@ -54,12 +58,13 @@ public class Mapa{
  
          }
          catch(Exception e){
-        	 System.out.println("error");
+        	 System.out.println("Map error");
+                 e.printStackTrace();
          }
     }
  
     public void update(){
- 
+        masterWindow.repaint();
     }
  
     /** metoda kolorujaca mape 
@@ -97,12 +102,12 @@ public class Mapa{
         return mapHeight;
     }
     
-    public void setTileSize(int newTileSize)
+    public void setTileSize(double newTileSize)
     {
-        tileSize = newTileSize;
+        tileSize = (int)newTileSize;
     }
     
-    public int getTileSize()
+    public double getTileSize()
     {
         return tileSize;
     }

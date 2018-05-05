@@ -3,6 +3,8 @@ package graetap3;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -11,26 +13,26 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /** klasa , kt?ra pozwala na rysowanie element?w gry */
-public class Rysowanie extends JPanel implements ActionListener, KeyListener{
+public class Rysowanie extends JPanel implements ActionListener, KeyListener, ComponentListener{
     private Mapa map;
     private Gracz player;
     
-    private double peroid; // czestot. odœwiezania ekranu gry
-    private Timer timer; // timer za³atwiajacy odœwie¿anie
-    private int scale;
+    private double peroid; // czestot. odï¿½wiezania ekranu gry
+    private Timer timer; // timer zaï¿½atwiajacy odï¿½wieï¿½anie
+    private double scale;
     
-    Konfiguracja konfiguracja = new Konfiguracja();
+    private Konfiguracja konfiguracja;
     //Rysowanie mapy gry
-    Rysowanie()
+    Rysowanie(Konfiguracja konfiguracja)
     {  
+        this.konfiguracja = konfiguracja;
         setFocusable(true);
         addKeyListener(this);
         scale = 1;
-        setSize(konfiguracja.width*scale, konfiguracja.height*scale);
+        setSize(konfiguracja.width, konfiguracja.height);
         setVisible(false);
-        map = new Mapa("mapa",(int)scale);
-        System.out.println(map.getUnscaledHeight());
-        System.out.println(map.getUnscaledWidth());
+        map = new Mapa("mapa",(int)scale, this);
+        
         player = new Gracz(map);
         peroid = 1000/50; // 1000ms przez 50Hz
 
@@ -39,7 +41,6 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener{
     
     public void start()
     {
-        setSize(konfiguracja.width*scale, konfiguracja.height*scale);
         setVisible(true);
         timer = new Timer((int)peroid, this);
         timer.setInitialDelay(0);
@@ -71,7 +72,7 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener{
         this.repaint();
     }
     
-    public void setScale(int newScale)
+    public void setScale(double newScale)
     {
         scale = newScale;
         map.setTileSize(newScale);
@@ -86,11 +87,11 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener{
         switch(key)
         {
             case 'w':
-                //System.out.println("w górê");
+                //System.out.println("w gï¿½rï¿½");
                 player.move(0, -0.5);
                 break;
             case 's':
-                //System.out.println("w dó³");
+                //System.out.println("w dï¿½");
                 player.move(0, 0.5);
                 break;
             case 'a':
@@ -115,6 +116,29 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {
         //System.out.println(e);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        System.out.println(e.getComponent().getSize());
+        map.setTileSize(e.getComponent().getBounds().width/100);
+        repaint();
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
