@@ -19,19 +19,24 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
     
     private double peroid; // czestot. od�wiezania ekranu gry
     private Timer timer; // timer za�atwiajacy od�wie�anie
-    private double scale;
     
     private Konfiguracja konfiguracja;
     //Rysowanie mapy gry
-    Rysowanie(Konfiguracja konfiguracja)
+    Rysowanie( JFrame masterFrame, Konfiguracja konfiguracja)
     {  
         this.konfiguracja = konfiguracja;
         setFocusable(true);
         addKeyListener(this);
-        scale = 1;
-        setSize(konfiguracja.width, konfiguracja.height);
+        
+        Rectangle fBounds = masterFrame.getBounds();         
+        Insets fInsets = masterFrame.getInsets();
+        //setSize(frame.getSize());
+        
+        setSize(fBounds.width-fInsets.left-fInsets.right, fBounds.height-fInsets.top-fInsets.bottom);
+        //setSize(800, 600);
         setVisible(false);
-        map = new Mapa("mapa",(int)scale, this);
+        map = new Mapa("mapa", this);
+        map.setSize(getSize().width, getSize().height);
         
         player = new Gracz(map);
         peroid = 1000/50; // 1000ms przez 50Hz
@@ -55,7 +60,12 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
     private void update(){
         player.update();
     }
-
+    
+    public Konfiguracja getConfig()
+    {
+        return konfiguracja;
+    }
+    
     /** funkcja, kt?a rysuje gracza i mape */
     public void paint ( Graphics g ) {
        Insets b = getInsets();
@@ -72,11 +82,6 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
         this.repaint();
     }
     
-    public void setScale(double newScale)
-    {
-        scale = newScale;
-        map.setTileSize(newScale);
-    }
 
     @Override
     public void keyTyped(KeyEvent e) {        
@@ -87,7 +92,7 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
         switch(key)
         {
             case 'w':
-                //System.out.println("w g�r�");
+                System.out.println("w g�r�");
                 player.move(0, -0.5);
                 break;
             case 's':
@@ -121,8 +126,13 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
 
     @Override
     public void componentResized(ComponentEvent e) {
-        System.out.println(e.getComponent().getSize());
-        map.setTileSize(e.getComponent().getBounds().width/100);
+        JFrame frame = (JFrame)e.getComponent();
+        Rectangle fBounds = frame.getBounds();         
+        Insets fInsets = frame.getInsets();
+        //setSize(frame.getSize());
+        
+        setSize(fBounds.width-fInsets.left-fInsets.right, fBounds.height-frame.getInsets().top-frame.getInsets().bottom);
+        map.setSize(getSize().width, getSize().height);
         repaint();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

@@ -1,5 +1,6 @@
 package graetap3;
 
+import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**glowny program, wywo�ywanie poszczeg�lnych element�w, pojawienie si� menu i gry */
@@ -7,7 +8,8 @@ import javax.swing.JFrame;
 public class Ramka extends JFrame {
 
 	public Ramka(){
-		setSize(400,400);
+            
+		setSize(600,600);
 		setTitle("KULKA");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);

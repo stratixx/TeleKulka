@@ -42,25 +42,26 @@ public class Gracz {
     public void update(){
     	x += velocity_x;
         y += velocity_y;
-        velocity_x += acceleration_x - 0.1*velocity_x;
+        velocity_x += acceleration_x - 0.3*velocity_x;
         velocity_y += acceleration_y - 0.1*velocity_y;
         
-        if( x>(map.getUnscaledWidth()-width) )   
+        
+        if( x>(map.getMapWidth()-width) )   
         {
-            x = map.getUnscaledWidth()-width;
+            x = map.getMapWidth()-width;
             velocity_x = 0;
         }
-        if( y>(map.getUnscaledHeight()-height) )  
+        if( y>(map.getMapHeight()-height) )  
         {
-            y = map.getUnscaledHeight()-height;
+            y = map.getMapHeight()-height;
             velocity_y = 0;
         }
-        if( x<0 )     
+        if( x<0.0 )     
         {
             x = 0;
             velocity_x = 0;
         }
-        if( y<0 )     
+        if( y<0.0 )     
         {
             y = 0;
             velocity_y = 0;
@@ -73,9 +74,11 @@ public class Gracz {
    * @param g
    */
     public void draw(Graphics g){
-        double scale = map.getTileSize();
+        double scaleHeight = map.getPrefHeight()/map.getMapHeight();
+        double scaleWidth = map.getPrefWidth()/map.getMapWidth();
+        
         g.setColor(Color.RED);
-        g.fillOval((int)(x*scale), (int)(y*scale), (int)(width*scale), (int)(height*scale));
+        g.fillOval((int)(x*scaleWidth), (int)(y*scaleHeight), (int)(width*scaleWidth), (int)(height*scaleHeight));
     }
  
 }

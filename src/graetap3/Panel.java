@@ -1,11 +1,11 @@
 package graetap3;
 
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.KeyEvent;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame; 
 import javax.swing.JLabel;
@@ -15,9 +15,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
  /**klasa zawieraj�ca menu gry*/
-public class Panel extends JPanel implements ActionListener {
+public class Panel extends JPanel implements ActionListener, ComponentListener {
 	
         private JFrame masterJFrame;
 	private JButton bGraj,bInstrukcja,bWyniki,bWyjdz;
@@ -36,7 +35,7 @@ public class Panel extends JPanel implements ActionListener {
 	//
         
         private Konfiguracja konfiguracja = new Konfiguracja();
-        private double scale = 1;
+        //private double scale = 1;
 	
 	Panel( JFrame masterJFrame )
         {
@@ -144,8 +143,9 @@ public class Panel extends JPanel implements ActionListener {
 		if(zrodlo==bGraj )
 		{
 			setLayout(null);
-			oknoGry = new Rysowanie(konfiguracja);
+			oknoGry = new Rysowanie( masterJFrame, konfiguracja);
                         masterJFrame.addComponentListener(oknoGry);
+                        masterJFrame.addComponentListener(this);
 			add(oknoGry);
 			bGraj.setVisible(false);
 			bInstrukcja.setVisible(false);
@@ -198,5 +198,31 @@ public class Panel extends JPanel implements ActionListener {
 		System.out.println("actionListener: ");
 		
 	}
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        JFrame frame = (JFrame)e.getComponent();
+        Rectangle fBounds = frame.getBounds();         
+        Insets fInsets = frame.getInsets();
+        //setSize(frame.getSize());
+        
+        setSize(fBounds.width-fInsets.left-fInsets.right, fBounds.height-frame.getInsets().top-frame.getInsets().bottom);
+                
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

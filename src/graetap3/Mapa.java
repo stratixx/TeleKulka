@@ -1,17 +1,11 @@
 package graetap3;
 
-import com.sun.javafx.tk.quantum.MasterTimer;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
  
 public class Mapa{
  
@@ -20,28 +14,39 @@ public class Mapa{
      * 
      * */
  
-    private int tileSize;
     private int[][] map;
     private int mapWidth;
     private int mapHeight;
     
-    Rysowanie masterWindow;
+    private Rysowanie masterWindow;
  
-    Konfiguracja conf = new Konfiguracja();
+    private Konfiguracja conf;
+    private double prefWidth;
+    private double prefHeight;
+    
+    //private double scaleWidth;
+    //private double scaleHeight;
+    
     /**
      * konstruktor mapy
      * @param s nazwa mapy
-     * @param tileSize wielkosc jednej cyfry
      */
-    public Mapa(String s, int tileSize, Rysowanie masterWindow){
+    public Mapa(String s, Rysowanie masterWindow)
+    {        
         this.masterWindow = masterWindow;
-         this.tileSize = tileSize;
+        conf = masterWindow.getConfig();
  
+        prefWidth = conf.width;
+        prefHeight = conf.height;
+        
          try{
         	 FileInputStream fstream = new FileInputStream(s+".txt");
              BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
              mapWidth = Integer.parseInt(br.readLine());
-             mapHeight = Integer.parseInt(br.readLine());
+             mapHeight = Integer.parseInt(br.readLine());        
+             
+            //scaleWidth = conf.width/mapWidth;
+            //scaleHeight = conf.height/mapHeight;
  
              map = new int[mapHeight][mapWidth];
              
@@ -58,11 +63,19 @@ public class Mapa{
  
          }
          catch(Exception e){
-        	 System.out.println("Map error");
-                 e.printStackTrace();
+        	 System.out.println("Map error: mordeczko, masz nullPointerException w Mapa.java w linii 58");
+                 //e.printStackTrace();
          }
     }
- 
+    
+    public void setSize( double width, double height)
+    {
+        prefWidth = width;
+        prefHeight = height;
+        //scaleWidth = prefWidth/mapWidth;
+        //scaleHeight = prefHeight/mapHeight;
+    }
+    
     public void update(){
         masterWindow.repaint();
     }
@@ -87,29 +100,30 @@ public class Mapa{
                 if( rc==2) {
                 	g.setColor(Color.GREEN);
                 }
-                g.fillRect(col*tileSize, row*tileSize, tileSize, tileSize);
+                g.fillRect((int)((col*prefWidth)/mapWidth), (int)((row*prefHeight)/mapHeight), (int)(prefWidth/mapWidth+1.0), (int)(prefHeight/mapHeight+1.0));
+             
             }
         }
     }
     
-    public double getUnscaledWidth()
+    public double getMapWidth()
     {
         return mapWidth;
     }
     
-    public double getUnscaledHeight()
+    public double getMapHeight()
     {
         return mapHeight;
     }
     
-    public void setTileSize(double newTileSize)
+    public double getPrefWidth()
     {
-        tileSize = (int)newTileSize;
+        return prefWidth;
     }
     
-    public double getTileSize()
+    public double getPrefHeight()
     {
-        return tileSize;
+        return prefHeight;
     }
 }
  
