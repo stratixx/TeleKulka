@@ -8,16 +8,17 @@ import java.awt.*;
 
 public class Gracz {
  
-    private double x = 20.0;
-    private double y = 20.0;
+    private double x = 1.0;
+    private double y = 1.0;
     private int width;
     private int height;
     
-    private double velocity_x = 1.0;
-    private double velocity_y = 0.0;
-    private double acceleration_x = 0.0;
-    private double acceleration_y = 0.2;
+    private double velocity_x ;
+    private double velocity_y ;
+    private double acceleration_x ;
+    private double acceleration_y ;
     
+    private Konfiguracja conf;
  
     private Mapa map;
  
@@ -25,11 +26,18 @@ public class Gracz {
      * 
      * @param _map
      */
-    public Gracz(Mapa _map){
+    public Gracz(Mapa _map, Konfiguracja conf){
  
         map = _map;
-        width = 10;
-        height = 10;
+        this.conf = conf;
+        width = conf.BallWidth;
+        height = conf.BallHeight;
+       
+        velocity_x  = conf.BallVelocity_x;
+        velocity_y = conf.BallVelocity_y ;
+        acceleration_x = conf.BallAcceleration_x;
+        acceleration_y = map.getGravity();
+        
     
     }
     
@@ -40,31 +48,30 @@ public class Gracz {
     }
     
     public void update(){
-    	x += velocity_x;
-        y += velocity_y;
-        velocity_x += acceleration_x - 0.3*velocity_x;
-        velocity_y += acceleration_y - 0.1*velocity_y;
-        
+    	x += velocity_x*conf.AnimationPeriod/1000;
+        y += velocity_y*conf.AnimationPeriod/1000;
+        velocity_x += acceleration_x*conf.AnimationPeriod/1000 - velocity_x*conf.BallFrictionFactor;
+        velocity_y += map.getGravity()*conf.AnimationPeriod/1000 - velocity_y*conf.BallFrictionFactor;
         
         if( x>(map.getMapWidth()-width) )   
         {
             x = map.getMapWidth()-width;
-            velocity_x = 0;
+            velocity_x *= -conf.BallWallHitLossFactor;
         }
         if( y>(map.getMapHeight()-height) )  
         {
             y = map.getMapHeight()-height;
-            velocity_y = 0;
+            velocity_y *= -conf.BallWallHitLossFactor;
         }
         if( x<0.0 )     
         {
             x = 0;
-            velocity_x = 0;
+            velocity_x *= -conf.BallWallHitLossFactor;
         }
         if( y<0.0 )     
         {
             y = 0;
-            velocity_y = 0;
+            velocity_y *= -conf.BallWallHitLossFactor;
         }
         
         map.update();

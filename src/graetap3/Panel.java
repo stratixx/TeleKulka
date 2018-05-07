@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  /**klasa zawieraj�ca menu gry*/
 public class Panel extends JPanel implements ActionListener, ComponentListener {
 	
-        private JFrame masterJFrame;
+        private Ramka masterJFrame;
 	private JButton bGraj,bInstrukcja,bWyniki,bWyjdz;
 	//
 	private JMenuBar menu;
@@ -34,12 +34,14 @@ public class Panel extends JPanel implements ActionListener, ComponentListener {
 	private Object sImie;
 	//
         
-        private Konfiguracja konfiguracja = new Konfiguracja();
+        private Konfiguracja konfiguracja;
         //private double scale = 1;
 	
-	Panel( JFrame masterJFrame )
+	Panel( Ramka masterJFrame )
         {
             this.masterJFrame = masterJFrame;
+            
+            konfiguracja = masterJFrame.getConfig();
 		setSize(konfiguracja.width, konfiguracja.height);
 		
 	 /**okno instrukcji*/

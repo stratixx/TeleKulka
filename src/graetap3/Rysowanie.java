@@ -35,20 +35,19 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
         setSize(fBounds.width-fInsets.left-fInsets.right, fBounds.height-fInsets.top-fInsets.bottom);
         //setSize(800, 600);
         setVisible(false);
-        map = new Mapa("mapa", this);
+        map = new Mapa("mapa5", this);
         map.setSize(getSize().width, getSize().height);
         
-        player = new Gracz(map);
-        peroid = 1000/50; // 1000ms przez 50Hz
-
+        player = new Gracz(map, konfiguracja);
+        
 
     }
     
     public void start()
     {
         setVisible(true);
-        timer = new Timer((int)peroid, this);
-        timer.setInitialDelay(0);
+        timer = new Timer((int)konfiguracja.AnimationPeriod, this);
+        timer.setInitialDelay(500);
         timer.start();
     }
     
@@ -92,7 +91,7 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
         switch(key)
         {
             case 'w':
-                System.out.println("w g�r�");
+                //System.out.println("w g�r�");
                 player.move(0, -0.5);
                 break;
             case 's':

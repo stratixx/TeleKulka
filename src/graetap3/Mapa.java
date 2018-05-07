@@ -21,6 +21,7 @@ public class Mapa{
     private Rysowanie masterWindow;
  
     private Konfiguracja conf;
+    private double gravitation;
     private double prefWidth;
     private double prefHeight;
     
@@ -40,8 +41,9 @@ public class Mapa{
         prefHeight = conf.height;
         
          try{
-        	 FileInputStream fstream = new FileInputStream(s+".txt");
+        	 FileInputStream fstream = new FileInputStream("mapy/"+s+".txt");
              BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+             gravitation = Double.parseDouble(br.readLine());
              mapWidth = Integer.parseInt(br.readLine());
              mapHeight = Integer.parseInt(br.readLine());        
              
@@ -63,7 +65,7 @@ public class Mapa{
  
          }
          catch(Exception e){
-        	 System.out.println("Map error: mordeczko, masz nullPointerException w Mapa.java w linii 58");
+        	 //System.out.println("Map error: mordeczko, masz nullPointerException w Mapa.java w linii 58");
                  //e.printStackTrace();
          }
     }
@@ -106,12 +108,18 @@ public class Mapa{
         }
     }
     
-    public double getMapWidth()
+    
+    public double getGravity()
+    {
+        return gravitation;
+    }
+    
+    public int getMapWidth()
     {
         return mapWidth;
     }
     
-    public double getMapHeight()
+    public int getMapHeight()
     {
         return mapHeight;
     }
