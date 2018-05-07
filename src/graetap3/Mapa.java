@@ -79,7 +79,6 @@ public class Mapa{
     }
     
     public void update(){
-        masterWindow.repaint();
     }
  
     /** metoda kolorujaca mape 

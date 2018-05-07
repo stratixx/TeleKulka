@@ -35,12 +35,11 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
         setSize(fBounds.width-fInsets.left-fInsets.right, fBounds.height-fInsets.top-fInsets.bottom);
         //setSize(800, 600);
         setVisible(false);
-        map = new Mapa("mapa5", this);
-        map.setSize(getSize().width, getSize().height);
+        map = new Mapa("mapa1", this);
+        map.setSize(getSize().width, getSize().height);        
+        player = new Gracz(konfiguracja);
         
-        player = new Gracz(map, konfiguracja);
-        
-
+        player.setMap(map);
     }
     
     public void start()
@@ -57,7 +56,12 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
     }
     
     private void update(){
-        player.update();
+        player.update();        
+        map.update();
+        
+        
+        
+        repaint();
     }
     
     public Konfiguracja getConfig()

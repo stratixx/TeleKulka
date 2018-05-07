@@ -26,9 +26,8 @@ public class Gracz {
      * 
      * @param _map
      */
-    public Gracz(Mapa _map, Konfiguracja conf){
+    public Gracz(Konfiguracja conf){
  
-        map = _map;
         this.conf = conf;
         width = conf.BallWidth;
         height = conf.BallHeight;
@@ -36,7 +35,6 @@ public class Gracz {
         velocity_x  = conf.BallVelocity_x;
         velocity_y = conf.BallVelocity_y ;
         acceleration_x = conf.BallAcceleration_x;
-        acceleration_y = map.getGravity();
         
     
     }
@@ -73,8 +71,12 @@ public class Gracz {
             y = 0;
             velocity_y *= -conf.BallWallHitLossFactor;
         }
-        
-        map.update();
+    }
+    
+    public void setMap( Mapa newMap )
+    {
+        map = newMap;
+        acceleration_y = map.getGravity();
     }
   /**metoda kolorujaca gracza (kulke)
    * 
