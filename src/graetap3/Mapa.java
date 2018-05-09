@@ -107,6 +107,19 @@ public class Mapa{
         }
     }
     
+    public int[][] getSubMap( int x0, int y0, int width, int height)
+    {
+        int[][] subMap = new int[height][width];
+        
+        for( int kx=0; kx<width; kx++ )
+            for( int ky=0; ky<height; ky++ )
+                if( (ky+y0)>=mapHeight || (kx+x0)>=mapWidth )
+                    subMap[ky][kx] = 0;
+                else
+                    subMap[ky][kx] = map[y0+ky][x0+kx];           
+        
+        return subMap;
+    }
     
     public double getGravity()
     {

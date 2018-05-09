@@ -59,8 +59,23 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
         player.update();        
         map.update();
         
+        double playerX = player.getX();
+        double playerY = player.getY();
+        int playerWidth = ((int)(player.getWidth()+playerX+0.999999))-((int)playerX);
+        int playerHeight = ((int)(player.getHeight()+playerY+0.999999))-((int)playerY);
         
-        
+        int[][] area = map.getSubMap((int)(player.getX()), (int)(player.getY()), playerWidth, playerHeight);
+        System.out.println("Collision detection: START");
+        for( int kx=0; kx<playerWidth; kx++ )
+            for( int ky=0; ky<playerHeight; ky++ )
+                if( area[ky][kx]==2 )
+                    System.out.println( Integer.toString((int)(player.getX())+kx) + " | " + Integer.toString(((int)player.getY())+ky) + " | zielony");
+                else if (area[ky][kx]==1)
+                    System.out.println( Integer.toString((int)(player.getX())+kx) + " | " + Integer.toString(((int)player.getY())+ky) + " | niebieski");
+        //System.out.println("area: ");
+        //area.toString();
+                System.out.println("Collision detection: END");
+
         repaint();
     }
     
@@ -75,12 +90,12 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
        g.translate (b.left, b.top);
        map.draw(g);
        player.draw(g);
-
+       
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        player.update();
+        update();
         
         this.repaint();
     }

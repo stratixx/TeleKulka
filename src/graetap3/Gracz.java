@@ -78,6 +78,27 @@ public class Gracz {
         map = newMap;
         acceleration_y = map.getGravity();
     }
+    
+    public double getX()
+    {
+        return x;
+    }
+    
+    public double getY()
+    {
+        return y;
+    }
+    
+    public double getWidth()
+    {
+        return width;
+    }
+    
+    public double getHeight()
+    {
+        return height;
+    }
+    
   /**metoda kolorujaca gracza (kulke)
    * 
    * @param g
