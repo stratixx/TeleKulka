@@ -65,17 +65,59 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
         int playerHeight = ((int)(player.getHeight()+playerY+0.999999))-((int)playerY);
         
         int[][] area = map.getSubMap((int)(player.getX()), (int)(player.getY()), playerWidth, playerHeight);
-        System.out.println("Collision detection: START");
+        
+        int blueCounter = 0;
+        int greenCounter = 0;
+        Boolean colided = false;
+        
         for( int kx=0; kx<playerWidth; kx++ )
+        {
             for( int ky=0; ky<playerHeight; ky++ )
-                if( area[ky][kx]==2 )
-                    System.out.println( Integer.toString((int)(player.getX())+kx) + " | " + Integer.toString(((int)player.getY())+ky) + " | zielony");
-                else if (area[ky][kx]==1)
-                    System.out.println( Integer.toString((int)(player.getX())+kx) + " | " + Integer.toString(((int)player.getY())+ky) + " | niebieski");
-        //System.out.println("area: ");
-        //area.toString();
-                System.out.println("Collision detection: END");
-
+            {                
+                if( area[ky][kx]==0 ) // black
+                    continue;
+                else if( area[ky][kx]==1 ) // blue
+                {
+                    blueCounter++;
+                    if(blueCounter>1)
+                    {
+                        collision(area[ky][kx]);
+                        colided = true;
+                        break;
+                    }
+                }
+                else if (area[ky][kx]==2) // green
+                {
+                    greenCounter++;    
+                    if(greenCounter>1)
+                    {
+                        collision(area[ky][kx]);
+                        colided = true;
+                        break;
+                    }         
+                }
+                
+                double radius = player.getHeight()/2;
+                double centerX = playerX-(int)playerX + player.getWidth()/2;
+                double centerY = playerY-(int)playerY + player.getHeight()/2;
+                
+                double[] pointX = new double[]{kx+0.0, kx+0.5, kx+0.5, kx+1.0, kx+0.0, kx+1.0, kx+1.0, kx+0.0}; 
+                double[] pointY = new double[]{ky+0.5, ky+0.0, ky+1.0, ky+0.5, ky+0.0, ky+0.0, ky+1.0, ky+1.0}; 
+                
+                for( int n=0; n<pointX.length; n++)
+                    if( checkPoint(centerX, centerY, pointX[n], pointY[n], radius) )
+                    {
+                        collision(area[ky][kx]);
+                        colided = true;
+                        break;
+                    }
+                if(colided==true)
+                    break;
+            } 
+            if( colided==true )
+                break;
+        }
+        
         repaint();
     }
     
@@ -91,8 +133,42 @@ public class Rysowanie extends JPanel implements ActionListener, KeyListener, Co
        map.draw(g);
        player.draw(g);
        
+        double scaleHeight = map.getPrefHeight()/map.getMapHeight();
+        double scaleWidth = map.getPrefWidth()/map.getMapWidth();
+         
+        
+    
     }
-
+    
+    public Boolean checkPoint( double aX, double aY, double bX, double bY, double radius)
+    {
+        return ( Math.sqrt( Math.pow(aX-bX, 2) + Math.pow(aY-bY, 2) )<radius );
+    }
+    
+    public void collision( int block )
+    {
+        switch(block)
+        {
+            case 1: // blue
+                player.setX(1.0);
+                player.setY(1.0);
+                player.resetVelocity();
+                break;
+            case 2: // green
+                double prefWidth = map.getPrefWidth();
+                double prefHeight = map.getPrefHeight();
+                map = new Mapa("mapa2", this);
+                map.setSize(prefWidth, prefHeight);
+                player.setMap(map);
+                player.setX(6.0);
+                player.setY(1.0);   
+                player.resetVelocity();             
+                break;
+            default:
+                System.out.println("Błąd w rysowanie.collision()");
+        }
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         update();

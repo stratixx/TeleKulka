@@ -8,8 +8,8 @@ import java.awt.*;
 
 public class Gracz {
  
-    private double x = 1.0;
-    private double y = 1.0;
+    private double x = 0.0;
+    private double y = 0.0;
     private int width;
     private int height;
     
@@ -77,6 +77,22 @@ public class Gracz {
     {
         map = newMap;
         acceleration_y = map.getGravity();
+    }
+    
+    public void resetVelocity()
+    {
+        velocity_x = 0;
+        velocity_y = 0;
+    }
+    
+    public void setX( double newX)
+    {
+        x = newX;
+    }
+    
+    public void setY( double newY)
+    {
+        y = newY;
     }
     
     public double getX()
